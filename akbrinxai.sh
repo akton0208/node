@@ -4,11 +4,11 @@
 show_menu() {
     echo "請選擇一個選項:"
     echo "1) 安裝 Docker 並設置 BrinxAI Worker Nodes"
-    echo "2) 運行 Stable Diffusion 容器"
-    echo "3) 運行 Text UI 容器"
-    echo "4) 運行 Rembg 容器"
-    echo "5) 運行 Upscaler 容器"
-    echo "6) 運行 Relay 容器"
+    echo "2) 運行 Stable Diffusion 容器 (要求8C8G)"
+    echo "3) 運行 Text UI 容器(要求4C4G)"
+    echo "4) 運行 Rembg 容器(要求2C2G)"
+    echo "5) 運行 Upscaler 容器(要求2C2G)"
+    echo "6) 運行 Relay 容器(要求極低, 分數也低)"
     echo "7) 查看 BrinxAI Worker Nodes 日誌"
     echo "8) 退出"
 }
