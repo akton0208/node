@@ -303,7 +303,7 @@ run_all_steps() {
 # 主程序
 while true; do
     show_menu
-    echo "999. 一鍵執行所有步驟"
+    echo "999. 一鍵執行所有步驟(1-6)"
     read -p "請選擇一個選項: " choice
     case $choice in
         1)
