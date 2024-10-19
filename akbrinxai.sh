@@ -55,7 +55,7 @@ handle_option() {
         6)
             echo "正在運行 Relay 容器..."
             docker pull admier/brinxai_nodes-relay:latest
-            sudo docker run -d --name brinxai_relay --cap-add=NET_ADMIN admier/brinxai_nodes-relay:latest
+            sudo docker run -d --name brinxai_relay --cap-add=NET_ADMIN -p 1194:1194/udp admier/brinxai_nodes-relay:latest
             echo "Relay 容器已啟動！"
             ;;
         7)
