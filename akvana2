@@ -20,6 +20,7 @@ if [ ! -f "$LOG_DIR/config.txt" ]; then
 DEPLOYER_PRIVATE_KEY=$A
 COLDADDRESS=$B
 HOTADDRESS=$C
+HOT_PRIVATE_KEY=$H
 OPENAI_API_KEY=$D
 DLP_MOKSHA_CONTRACT=$E
 DLP_TOKEN_MOKSHA_CONTRACT=$F
@@ -33,15 +34,14 @@ fi
 show_menu() {
     echo "1. 安裝需要文件"
     echo "2. 創建錢包"
-    echo "3. 導出冷錢包私鑰(這步驟會導出到/root/vanalog/coldkey.log方便查看)"
-    echo "4. 導出熱錢包私鑰(這步驟會導出到/root/vanalog/hotkey.log方便查看)"
-    echo "5. 設置智能合約環境(這步驟會導出到/root/vanalog/contract.log方便查看)"
-    echo "6. 設置驗證器,如運行成功就CTRL+C關掉用步驟7後台運行"
-    echo "7. 設置驗證器服務"
-    echo "8. 查看驗證器日誌"
-    echo "9. 停上第7步的運行狀態"
-    echo "10. 刪除所有文件(只保留vanalog)"
-    echo "11. 退出"
+    echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
+    echo "4. 設置智能合約環境"
+    echo "5. 設置驗證器,如運行成功就CTRL+C關掉用步驟7後台運行"
+    echo "6. 設置驗證器服務"
+    echo "7. 查看驗證器日誌"
+    echo "8. 停上第7步的運行狀態"
+    echo "9. 刪除所有文件(只保留vanalog)"
+    echo "10. 退出"
 }
 
 # 檢查命令是否存在的函數
@@ -122,7 +122,7 @@ export_coldkey() {
     echo "私鑰已成功輸入並賦值給變數 \$A: $A"
 
     # 提取 COLDADDRESS
-    COLDKEYPUB_FILE="$LOG_DIR/coldkey.log"
+    COLDKEYPUB_FILE="/root/.vana/wallets/default/coldkeypub.txt"
     if [ -f "$COLDKEYPUB_FILE" ]; then
         COLDADDRESS=$(jq -r '.address' "$COLDKEYPUB_FILE")
     else
@@ -148,26 +148,29 @@ export_coldkey() {
         HOTADDRESS="default_value"
     fi
     echo "地址已成功提取並賦值給變數 \$HOTADDRESS: $HOTADDRESS"
+    
+    # 提取 HOTPRIVATEADDRESS
+    HOTKEY_FILE="/root/.vana/wallets/default/hotkeys/default"
+    if [ -f "$HOTKEY_FILE" ]; then
+        HOTKEY_CONTENT=$(cat "$HOTKEY_FILE")
+        HOT_PRIVATE_KEY=$(echo "$HOTKEY_CONTENT" | jq -r '.privateKey')
+        if [ -z "$HOT_PRIVATE_KEY" ]; then
+            echo "無法從 HOTKEY_FILE 提取到 address"
+            HOT_PRIVATE_KEY="default_value"
+        fi
+    else
+        HOT_PRIVATE_KEY="default_value"
+    fi
+    echo "地址已成功提取並賦值給變數 \$HOT_PRIVATE_KEY: $HOT_PRIVATE_KEY"
 
     # 更新 config.txt 文件
     cat <<EOL > "$LOG_DIR/config.txt"
 DEPLOYER_PRIVATE_KEY=$A
 COLDADDRESS=$COLDADDRESS
 HOTADDRESS=$HOTADDRESS
+HOT_PRIVATE_KEY=$HOT_PRIVATE_KEY
 EOL
 
-    echo "更新後的 config.txt 文件內容:"
-    cat "$LOG_DIR/config.txt"
-}
-
-# 導出熱錢包私鑰的函數
-export_hotkey() {
-    echo "導出熱錢包私鑰..."
-    cd $HOME/vana-dlp-chatgpt/
-    vanacli wallet export_private_key 2>&1 | tee "$LOG_DIR/hotkey.log" || { echo "導出熱錢包私鑰失敗"; exit 1; }
-    echo "熱錢包私鑰已導出到 $LOG_DIR/hotkey.log"
-    read -p "請輸入熱錢包地址: " C
-    echo "HOLDADDRESS=$C" >> "$LOG_DIR/config.txt"
     echo "更新後的 config.txt 文件內容:"
     cat "$LOG_DIR/config.txt"
 }
@@ -331,27 +334,24 @@ while true; do
             export_coldkey
             ;;
         4)
-            export_hotkey
-            ;;
-        5)
             deploy_smart_contracts
             ;;
-        6)
+        5)
             setup_validator
             ;;
-        7)
+        6)
             setup_validator_service
             ;;
-        8)
+        7)
             view_validator_logs
             ;;
-        9)
+        8)
             stop_and_remove_service
             ;;
-        10)
+        9)
             delete_all_files
             ;;
-        11)
+        10)
             echo "退出"
             break
             ;;
