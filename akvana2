@@ -114,11 +114,46 @@ export_coldkey() {
     echo "導出冷錢包私鑰..."
     cd $HOME/vana-dlp-chatgpt/
     vanacli wallet export_private_key 2>&1 | tee "$LOG_DIR/coldkey.log"
+
+    # 手動輸入私鑰
     read -p "請輸入冷錢包私鑰: " A
     echo "私鑰已成功輸入並賦值給變數 \$A: $A"
-    read -p "請輸入冷錢包地址: " B
-    echo "DEPLOYER_PRIVATE_KEY=$A" > "$LOG_DIR/config.txt"
-    echo "COLDADDRESS=$B" >> "$LOG_DIR/config.txt"
+
+    # 提取 COLDADDRESS
+    COLDKEYPUB_FILE="$LOG_DIR/coldkey.log"
+    if [ -f "$COLDKEYPUB_FILE" ]; then
+        COLDADDRESS=$(jq -r '.address' "$COLDKEYPUB_FILE")
+    else
+        COLDADDRESS="default_value"
+    fi
+
+    if [ "$COLDADDRESS" == "default_value" ]; then
+        echo "無法自動提取冷錢包地址，請手動輸入。"
+        read -p "請輸入冷錢包地址: " COLDADDRESS
+    fi
+    echo "地址已成功提取並賦值給變數 \$COLDADDRESS: $COLDADDRESS"
+
+    # 提取 HOTADDRESS
+    HOTKEY_FILE="/root/.vana/wallets/default/hotkeys/default"
+    if [ -f "$HOTKEY_FILE" ]; then
+        HOTKEY_CONTENT=$(cat "$HOTKEY_FILE")
+        HOTADDRESS=$(echo "$HOTKEY_CONTENT" | jq -r '.address')
+        if [ -z "$HOTADDRESS" ]; then
+            echo "無法從 HOTKEY_FILE 提取到 address"
+            HOTADDRESS="default_value"
+        fi
+    else
+        HOTADDRESS="default_value"
+    fi
+    echo "地址已成功提取並賦值給變數 \$HOTADDRESS: $HOTADDRESS"
+
+    # 更新 config.txt 文件
+    cat <<EOL > "$LOG_DIR/config.txt"
+DEPLOYER_PRIVATE_KEY=$A
+COLDADDRESS=$COLDADDRESS
+HOTADDRESS=$HOTADDRESS
+EOL
+
     echo "更新後的 config.txt 文件內容:"
     cat "$LOG_DIR/config.txt"
 }
