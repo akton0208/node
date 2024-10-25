@@ -35,7 +35,7 @@ show_menu() {
     echo "2. 創建錢包"
     echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
     echo "4. 設置智能合約環境及驗證器()"
-    echo "5. 開始驗證器服務()"
+    echo "5. 測試驗證器()"
     echo "6. 設置驗證器服務"
     echo "7. 查看驗證器日誌"
     echo "8. 停止後台運行狀態"
