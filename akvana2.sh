@@ -238,7 +238,7 @@ EOL
     cd $HOME/vana-dlp-chatgpt
     ./vanacli dlp register_validator --stake_amount 50 || { echo "註冊驗證器失敗"; exit 1; }
 
-    cat "$LOG_DIR/config.txt"
+    grep -E "HOTADDRESS=0x[0-9a-fA-F]{40}" "$LOG_DIR/config.txt"
 }
 
 # 運行驗證器
