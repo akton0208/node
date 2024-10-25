@@ -297,9 +297,6 @@ delete_all_files() {
     echo "所有文件已刪除！"
 }
 
-# 一鍵執行所有步驟的函數
-
-
 # 主程序
 while true; do
     show_menu
