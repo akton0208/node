@@ -236,7 +236,7 @@ EOL
     # 設置驗證器
     echo "設置驗證器..."
     cd $HOME/vana-dlp-chatgpt
-    ./vanacli dlp register_validator --stake_amount 100 || { echo "註冊驗證器失敗"; exit 1; }
+    ./vanacli dlp register_validator --stake_amount 50 || { echo "註冊驗證器失敗"; exit 1; }
 
     cat "$LOG_DIR/config.txt"
 }
