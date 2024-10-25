@@ -236,6 +236,7 @@ EOL
     echo "設置驗證器..."
     cd $HOME/vana-dlp-chatgpt
     ./vanacli dlp register_validator --stake_amount 10 || { echo "註冊驗證器失敗"; exit 1; }
+}
 
 # 運行驗證器
 start_validator() {
@@ -298,12 +299,12 @@ delete_all_files() {
 
 # 一鍵執行所有步驟的函數
 run_all_steps() {
-    install_files
-    create_wallet
-    export_coldkey
-    export_hotkey
-    deploy_smart_contracts
-    setup_validator
+    #install_files
+    #create_wallet
+    #export_coldkey
+    #export_hotkey
+    #deploy_smart_contracts
+    #setup_validator
 }
 
 # 主程序
