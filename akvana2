@@ -9,6 +9,8 @@ VANA_CLI_PATH="/root/vana-dlp-chatgpt/vanacli"
 VANA_DLP_CHATGPT_PATH="/root/vana-dlp-chatgpt"
 LOG_DIR="/root/vanalog"
 CONFIG_FILE="/root/vanalog/config.txt"
+COLDKEYPUB_FILE="/root/.vana/wallets/default/coldkeypub.txt"
+HOTKEY_FILE="/root/.vana/wallets/default/hotkeys/default"
 
 # 創建日誌資料夾
 mkdir -p "$LOG_DIR"
