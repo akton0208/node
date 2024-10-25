@@ -302,7 +302,6 @@ stop_and_remove_service() {
 # 刪除所有文件的函數
 delete_all_files() {
     echo "刪除所有文件..."
-    rm -r ~/.vana
     rm -r ~/vana-dlp-smart-contracts
     rm -r ~/vana-dlp-chatgpt
     echo "所有文件已刪除！"
