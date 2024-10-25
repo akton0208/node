@@ -246,7 +246,7 @@ EOL
     cd $HOME/vana-dlp-chatgpt
     ./vanacli dlp register_validator --stake_amount 10 || { echo "註冊驗證器失敗"; exit 1; }
     # 從 config.txt 提取驗證器地址
-    VALIDATOR_ADDRESS=$(grep 'HOLDADDRESS=' $LOG_DIR/config.txt | cut -d '=' -f2)
+    VALIDATOR_ADDRESS=$(echo "$HOTKEY_CONTENT" | jq -r '.address')
     ./vanacli dlp approve_validator --validator_address="$VALIDATOR_ADDRESS" || { echo "批准驗證器失敗"; exit 1; }
     poetry run python -m chatgpt.nodes.validator || { echo "運行驗證器失敗"; exit 1; }
     echo "驗證器設置完成！"
