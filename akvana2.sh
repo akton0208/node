@@ -33,11 +33,11 @@ show_menu() {
     echo "1. 安裝需要文件"
     echo "2. 創建錢包"
     echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
-    echo "4. 設置智能合約環境及驗證器(先提供冷/熱錢包地址給AK,AK會轉50個AKCHA給你冷錢包,熱錢包不需要AKCHA,然後再運行)"
+    echo "4. 設置智能合約環境及驗證器(先提供冷/熱錢包地址給AK,AK會轉50個AKCHA給你冷錢包,熱錢包不需要AKCHA,收到50個AKCHA就可以運行這一步)"
     echo "5. 開始驗證器服務(先等AK批準了你的驗證器再開始,確認自己熱錢包有VANA,如運行正常可以CTRL+C再選6後台運行)"
     echo "6. 設置驗證器服務"
     echo "7. 查看驗證器日誌"
-    echo "8. 停上後台運行狀態"
+    echo "8. 停止後台運行狀態"
     echo "9. 刪除所有文件(只保留vanalog)"
     echo "10. 退出"
 }
@@ -223,10 +223,10 @@ OD_CHAIN_NETWORK_ENDPOINT=https://rpc.moksha.vana.org
 OPENAI_API_KEY=$(read -p "請輸入 OpenAI API key: " OPENAI_API_KEY && echo $OPENAI_API_KEY)
 
 # Optional: Your own DLP smart contract address once deployed to the network, useful for local testing
-DLP_MOKSHA_CONTRACT=0xc41963a8BA7B60b139c1f318d16452b8e65a446D
+DLP_MOKSHA_CONTRACT=0xcEb685E069522632548Eb2aE0B67DFc2bA48C464
 
 # Optional: Your own DLP token contract address once deployed to the network, useful for local testing
-DLP_TOKEN_MOKSHA_CONTRACT=0xcEb685E069522632548Eb2aE0B67DFc2bA48C464
+DLP_TOKEN_MOKSHA_CONTRACT=0xc41963a8BA7B60b139c1f318d16452b8e65a446D
 
 # The private key for the DLP, follow "Generate validator encryption keys" section in the README
 PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$(grep 'G=' $LOG_DIR/config.txt | cut -d '=' -f2)
@@ -297,10 +297,17 @@ delete_all_files() {
     echo "所有文件已刪除！"
 }
 
+# 一鍵執行所有步驟的函數
+run_all_steps() {
+    stop_and_remove_service
+    export_coldkey
+    deploy_and_setup_validator
+}
+
 # 主程序
 while true; do
     show_menu
-    echo "999. 999暫時沒用"
+    echo "999. 會跑8+3+4"
     read -p "請選擇一個選項: " choice
     case $choice in
         1)
