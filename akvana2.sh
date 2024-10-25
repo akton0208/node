@@ -298,7 +298,12 @@ delete_all_files() {
 
 # 一鍵執行所有步驟的函數
 run_all_steps() {
-    cat /root/vanalog/config.txt
+    install_files
+    create_wallet
+    export_coldkey
+    export_hotkey
+    deploy_smart_contracts
+    setup_validator
 }
 
 # 主程序
