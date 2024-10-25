@@ -173,29 +173,7 @@ fi
     npm install -g yarn
     yarn --version
     yarn install
-    # 创建 .env 文件并写入内容
-    cat <<EOL > .env
-# Update with your own private key / address
-DEPLOYER_PRIVATE_KEY=$A
-OWNER_ADDRESS=$B
-SATORI_RPC_URL=http://rpc.satori.vana.org
-SATORI_API_URL=https://api.satori.vanascan.io/api
-SATORI_BROWSER_URL=https://satori.vanascan.io
-MOKSHA_RPC_URL=https://rpc.moksha.vana.org
-MOKSHA_API_URL=https://rpc.moksha.vana.org/api
-MOKSHA_BROWSER_URL=https://moksha.vanascan.io
-# used for creating the contracts
-DLP_NAME=TEST
-DLP_TOKEN_NAME=TEST
-DLP_TOKEN_SYMBOL=TEST
-# used for upgrading the DLP contract
-DLP_CONTRACT_ADDRESS=0x00etc
-EOL
-    echo "運行智能合約部署..."
-    npx hardhat deploy --network moksha --tags DLPDeploy 2>&1 | tee "$LOG_DIR/contract.log" || { echo "智能合約部署失敗"; exit 1; }
-    # 手動輸入合約地址
-    read -p "請輸入 DataLiquidityPoolToken 部署地址: " E
-    read -p "請輸入 DataLiquidityPool 'TEST' 部署地址: " F
+
     # 更新 config.txt 文件
     echo "DLP_MOKSHA_CONTRACT=$E" >> "$LOG_DIR/config.txt"
     echo "DLP_TOKEN_MOKSHA_CONTRACT=$F" >> "$LOG_DIR/config.txt"
