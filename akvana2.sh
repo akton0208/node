@@ -35,13 +35,12 @@ show_menu() {
     echo "1. 安裝需要文件"
     echo "2. 創建錢包"
     echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
-    echo "4. 設置智能合約環境"
-    echo "5. 設置驗證器,如運行成功就CTRL+C關掉用步驟7後台運行"
-    echo "6. 設置驗證器服務"
-    echo "7. 查看驗證器日誌"
-    echo "8. 停上第7步的運行狀態"
-    echo "9. 刪除所有文件(只保留vanalog)"
-    echo "10. 退出"
+    echo "4. 設置智能合約環境及驗證器"
+    echo "5. 設置驗證器服務"
+    echo "6. 查看驗證器日誌"
+    echo "7. 停上第7步的運行狀態"
+    echo "8. 刪除所有文件(只保留vanalog)"
+    echo "9. 退出"
 }
 
 # 檢查命令是否存在的函數
@@ -175,33 +174,33 @@ EOL
     cat "$LOG_DIR/config.txt"
 }
 
-# 部署智能合約的函數
-deploy_smart_contracts() {
+deploy_and_setup_validator() {
+    # 部署智能合約
     cd $HOME/vana-dlp-chatgpt/
     ./keygen.sh
 
     # 返回 $HOME 目錄
     cd $HOME
 
-# 確保 public_key_base64.asc 文件存在並且可以讀取
-if [ -f "$HOME/vana-dlp-chatgpt/public_key_base64.asc" ]; then
-    G=$(cat $HOME/vana-dlp-chatgpt/public_key_base64.asc)
-    echo "讀取到的內容: $G"
+    # 確保 public_key_base64.asc 文件存在並且可以讀取
+    if [ -f "$HOME/vana-dlp-chatgpt/public_key_base64.asc" ]; then
+        G=$(cat $HOME/vana-dlp-chatgpt/public_key_base64.asc)
+        echo "讀取到的內容: $G"
 
-    # 更新 config.txt 中的 PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64
-    if grep -q "^PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=" "$CONFIG_FILE"; then
-        # 如果條目已存在，則更新它
-        awk -v new_value="$G" '/^PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=/ {$0="PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64="new_value} 1' "$CONFIG_FILE" > "$CONFIG_FILE.tmp" && mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
+        # 更新 config.txt 中的 PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64
+        if grep -q "^PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=" "$CONFIG_FILE"; then
+            # 如果條目已存在，則更新它
+            awk -v new_value="$G" '/^PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=/ {$0="PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64="new_value} 1' "$CONFIG_FILE" > "$CONFIG_FILE.tmp" && mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
+        else
+            # 如果條目不存在，則添加它
+            echo "PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$G" >> "$CONFIG_FILE"
+        fi
+
+        echo "更新成功: PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$G"
     else
-        # 如果條目不存在，則添加它
-        echo "PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$G" >> "$CONFIG_FILE"
+        echo "public_key_base64.asc 文件不存在或無法讀取"
+        exit 1
     fi
-
-    echo "更新成功: PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$G"
-else
-    echo "public_key_base64.asc 文件不存在或無法讀取"
-    exit 1
-fi
 
     # 从 config.txt 文件中提取 DEPLOYER_PRIVATE_KEY 和 OWNER_ADDRESS
     A=$(grep 'DEPLOYER_PRIVATE_KEY=' $LOG_DIR/config.txt | cut -d '=' -f2)
@@ -239,13 +238,10 @@ DLP_TOKEN_MOKSHA_CONTRACT=$(grep 'DLP_MOKSHA_CONTRACT=' $LOG_DIR/config.txt | cu
 # The private key for the DLP, follow "Generate validator encryption keys" section in the README
 PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$(grep 'G=' $LOG_DIR/config.txt | cut -d '=' -f2)
 EOL
-}
 
-# 設置驗證器的函數
-setup_validator() {
+    # 設置驗證器
     echo "設置驗證器..."
-    cd ~
-    cd vana-dlp-chatgpt
+    cd $HOME/vana-dlp-chatgpt
     ./vanacli dlp register_validator --stake_amount 10 || { echo "註冊驗證器失敗"; exit 1; }
     # 從 config.txt 提取驗證器地址
     VALIDATOR_ADDRESS=$(grep 'HOLDADDRESS=' $LOG_DIR/config.txt | cut -d '=' -f2)
@@ -333,24 +329,21 @@ while true; do
             export_coldkey
             ;;
         4)
-            deploy_smart_contracts
+            deploy_and_setup_validator
             ;;
         5)
-            setup_validator
-            ;;
-        6)
             setup_validator_service
             ;;
-        7)
+        6)
             view_validator_logs
             ;;
-        8)
+        7)
             stop_and_remove_service
             ;;
-        9)
+        8)
             delete_all_files
             ;;
-        10)
+        9)
             echo "退出"
             break
             ;;
