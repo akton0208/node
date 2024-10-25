@@ -33,12 +33,13 @@ show_menu() {
     echo "1. 安裝需要文件"
     echo "2. 創建錢包"
     echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
-    echo "4. 設置智能合約環境及驗證器"
-    echo "5. 設置驗證器服務"
-    echo "6. 查看驗證器日誌"
-    echo "7. 停上第7步的運行狀態"
-    echo "8. 刪除所有文件(只保留vanalog)"
-    echo "9. 退出"
+    echo "4. 設置智能合約環境及驗證器(先提供冷/熱錢包地址給AK,AK會轉50個AKCHA給你,然後再運行)"
+    echo "5. 開始驗證器服務(先等AK批準了你的驗證器再開始,確認自己熱錢包有VANA,如運行正常可以CTRL+C再選6後台運行)"
+    echo "6. 設置驗證器服務"
+    echo "7. 查看驗證器日誌"
+    echo "8. 停上第7步的運行狀態"
+    echo "9. 刪除所有文件(只保留vanalog)"
+    echo "10. 退出"
 }
 
 # 檢查命令是否存在的函數
@@ -235,9 +236,9 @@ EOL
     echo "設置驗證器..."
     cd $HOME/vana-dlp-chatgpt
     ./vanacli dlp register_validator --stake_amount 10 || { echo "註冊驗證器失敗"; exit 1; }
-    # 從 config.txt 提取驗證器地址
-    VALIDATOR_ADDRESS=$(echo "$HOTKEY_CONTENT" | jq -r '.address')
-    ./vanacli dlp approve_validator --validator_address="$VALIDATOR_ADDRESS" || { echo "批准驗證器失敗"; exit 1; }
+
+# 運行驗證器
+start_validator() {
     poetry run python -m chatgpt.nodes.validator || { echo "運行驗證器失敗"; exit 1; }
     echo "驗證器設置完成！"
 }
@@ -297,18 +298,18 @@ delete_all_files() {
 
 # 一鍵執行所有步驟的函數
 run_all_steps() {
-    install_files
-    create_wallet
-    export_coldkey
-    export_hotkey
-    deploy_smart_contracts
-    setup_validator
+    #install_files
+    #create_wallet
+    #export_coldkey
+    #export_hotkey
+    #deploy_smart_contracts
+    #setup_validator
 }
 
 # 主程序
 while true; do
     show_menu
-    echo "999. 一鍵執行所有步驟(1-6)"
+    echo "999. 999暫時沒用"
     read -p "請選擇一個選項: " choice
     case $choice in
         1)
@@ -324,18 +325,21 @@ while true; do
             deploy_and_setup_validator
             ;;
         5)
+            start_validator
+            ;;            
+        6)
             setup_validator_service
             ;;
-        6)
+        7)
             view_validator_logs
             ;;
-        7)
+        8)
             stop_and_remove_service
             ;;
-        8)
+        9)
             delete_all_files
             ;;
-        9)
+        10)
             echo "退出"
             break
             ;;
