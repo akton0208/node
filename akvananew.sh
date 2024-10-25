@@ -175,8 +175,8 @@ fi
     yarn install
 
     # 更新 config.txt 文件
-    echo "DLP_MOKSHA_CONTRACT=$E" >> "$LOG_DIR/config.txt"
-    echo "DLP_TOKEN_MOKSHA_CONTRACT=$F" >> "$LOG_DIR/config.txt"
+    echo "DLP_MOKSHA_CONTRACT=0xc41963a8BA7B60b139c1f318d16452b8e65a446D" >> "$LOG_DIR/config.txt"
+    echo "DLP_TOKEN_MOKSHA_CONTRACT=0xcEb685E069522632548Eb2aE0B67DFc2bA48C464" >> "$LOG_DIR/config.txt"
     # 顯示更新後的 config.txt 文件內容
     echo "更新後的 config.txt 文件內容:"
     cat "$LOG_DIR/config.txt"
