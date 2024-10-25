@@ -22,8 +22,6 @@ COLDADDRESS=$B
 HOTADDRESS=$C
 HOT_PRIVATE_KEY=$H
 OPENAI_API_KEY=$D
-DLP_MOKSHA_CONTRACT=$E
-DLP_TOKEN_MOKSHA_CONTRACT=$F
 PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$G
 EOL
 else
@@ -213,14 +211,6 @@ deploy_and_setup_validator() {
     yarn --version
     yarn install
 
-    # 更新 config.txt 文件
-    sed -i '/^DLP_MOKSHA_CONTRACT=/d' "$LOG_DIR/config.txt"
-    echo "DLP_MOKSHA_CONTRACT=0xc41963a8BA7B60b139c1f318d16452b8e65a446D" >> "$LOG_DIR/config.txt"
-    sed -i '/^DLP_TOKEN_MOKSHA_CONTRACT=/d' "$LOG_DIR/config.txt"
-    echo "DLP_TOKEN_MOKSHA_CONTRACT=0xcEb685E069522632548Eb2aE0B67DFc2bA48C464" >> "$LOG_DIR/config.txt"
-    # 顯示更新後的 config.txt 文件內容
-    echo "更新後的 config.txt 文件內容:"
-    cat "$LOG_DIR/config.txt"
     cd $HOME/vana-dlp-chatgpt
     # 创建 .env 文件并写入内容
     cat <<EOL > .env
@@ -232,10 +222,10 @@ OD_CHAIN_NETWORK_ENDPOINT=https://rpc.moksha.vana.org
 OPENAI_API_KEY=$(read -p "請輸入 OpenAI API key: " OPENAI_API_KEY && echo $OPENAI_API_KEY)
 
 # Optional: Your own DLP smart contract address once deployed to the network, useful for local testing
-DLP_MOKSHA_CONTRACT=$(grep 'DLP_TOKEN_MOKSHA_CONTRACT=' $LOG_DIR/config.txt | cut -d '=' -f2)
+DLP_MOKSHA_CONTRACT=0xc41963a8BA7B60b139c1f318d16452b8e65a446D
 
 # Optional: Your own DLP token contract address once deployed to the network, useful for local testing
-DLP_TOKEN_MOKSHA_CONTRACT=$(grep 'DLP_MOKSHA_CONTRACT=' $LOG_DIR/config.txt | cut -d '=' -f2)
+DLP_TOKEN_MOKSHA_CONTRACT=0xcEb685E069522632548Eb2aE0B67DFc2bA48C464
 
 # The private key for the DLP, follow "Generate validator encryption keys" section in the README
 PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=$(grep 'G=' $LOG_DIR/config.txt | cut -d '=' -f2)
