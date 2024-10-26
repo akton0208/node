@@ -5,12 +5,12 @@ source $HOME/vana-dlp-chatgpt/myenv/bin/activate
 source $HOME/.bash_profile
 
 # 設置絕對路徑
-VANA_CLI_PATH="$HOME/vana-dlp-chatgpt/vanacli"
-VANA_DLP_CHATGPT_PATH="$HOME/vana-dlp-chatgpt"
-LOG_DIR="$HOME/vanalog"
-CONFIG_FILE="$HOME/vanalog/config.txt"
-COLDKEYPUB_FILE="$HOME/.vana/wallets/default/coldkeypub.txt"
-HOTKEY_FILE="$HOME/.vana/wallets/default/hotkeys/default"
+VANA_CLI_PATH="/root/vana-dlp-chatgpt/vanacli"
+VANA_DLP_CHATGPT_PATH="/root/vana-dlp-chatgpt"
+LOG_DIR="/root/vanalog"
+CONFIG_FILE="/root/vanalog/config.txt"
+COLDKEYPUB_FILE="/root/.vana/wallets/default/coldkeypub.txt"
+HOTKEY_FILE="/root/.vana/wallets/default/hotkeys/default"
 
 # 創建日誌資料夾
 mkdir -p "$LOG_DIR"
@@ -33,7 +33,7 @@ show_menu() {
     echo "AKCHA合約 0xc41963a8BA7B60b139c1f318d16452b8e65a446D"
     echo "1. 安裝需要文件"
     echo "2. 創建錢包"
-    echo "3. 導出冷/熱錢包私鑰(所有資料都在$home/vanalog/config.txt)"
+    echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
     echo "4. 設置智能合約環境及驗證器()"
     echo "5. 測試驗證器()"
     echo "6. 設置驗證器服務"
@@ -121,7 +121,7 @@ export_coldkey() {
     echo "私鑰已成功輸入並賦值給變數 \$A: $A"
 
     # 提取 COLDADDRESS
-    COLDKEYPUB_FILE="$HOME/.vana/wallets/default/coldkeypub.txt"
+    COLDKEYPUB_FILE="/root/.vana/wallets/default/coldkeypub.txt"
     if [ -f "$COLDKEYPUB_FILE" ]; then
         COLDADDRESS=$(jq -r '.address' "$COLDKEYPUB_FILE")
     else
@@ -135,7 +135,7 @@ export_coldkey() {
     echo "地址已成功提取並賦值給變數 \$COLDADDRESS: $COLDADDRESS"
 
     # 提取 HOTADDRESS
-    HOTKEY_FILE="$HOME/.vana/wallets/default/hotkeys/default"
+    HOTKEY_FILE="/root/.vana/wallets/default/hotkeys/default"
     if [ -f "$HOTKEY_FILE" ]; then
         HOTKEY_CONTENT=$(cat "$HOTKEY_FILE")
         HOTADDRESS=$(echo "$HOTKEY_CONTENT" | jq -r '.address')
@@ -149,7 +149,7 @@ export_coldkey() {
     echo "地址已成功提取並賦值給變數 \$HOTADDRESS: $HOTADDRESS"
     
     # 提取 HOTPRIVATEADDRESS
-    HOTKEY_FILE="$HOME/.vana/wallets/default/hotkeys/default"
+    HOTKEY_FILE="/root/.vana/wallets/default/hotkeys/default"
     if [ -f "$HOTKEY_FILE" ]; then
         HOTKEY_CONTENT=$(cat "$HOTKEY_FILE")
         HOT_PRIVATE_KEY=$(echo "$HOTKEY_CONTENT" | jq -r '.privateKey')
@@ -258,12 +258,12 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=$HOME/vana-dlp-chatgpt
-ExecStart=/bin/bash -c 'source $HOME/vana-dlp-chatgpt/myenv/bin/activate && $HOME/.local/bin/poetry run python -m chatgpt.nodes.validator'
+WorkingDirectory=/root/vana-dlp-chatgpt
+ExecStart=/bin/bash -c 'source /root/vana-dlp-chatgpt/myenv/bin/activate && /root/.local/bin/poetry run python -m chatgpt.nodes.validator'
 Restart=on-failure
 RestartSec=10
-Environment=PATH=$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/root/vana-dlp-chatgpt/myenv/bin
-Environment=PYTHONPATH=$HOME/vana-dlp-chatgpt
+Environment=PATH=/root/.local/bin:/usr/local/bin:/usr/bin:/bin:/root/vana-dlp-chatgpt/myenv/bin
+Environment=PYTHONPATH=/root/vana-dlp-chatgpt
 
 [Install]
 WantedBy=multi-user.target
