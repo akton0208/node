@@ -52,12 +52,16 @@ EOF
       --env-file validator.env \
       --name v3 \
       elixirprotocol/validator:v3
+
+    main_menu
 }
 
 # Function to check Docker logs
 function check_docker_logs() {
     echo "Checking Elixir Docker container logs..."
     docker logs -f v3
+
+    main_menu
 }
 
 # Function to delete Docker container
@@ -66,6 +70,8 @@ function delete_docker_container() {
     docker stop v3
     docker rm v3
     echo "Elixir Docker container deleted."
+
+    main_menu
 }
 
 # Function to kill, remove, pull, and run Docker container
@@ -81,6 +87,8 @@ function kill_remove_pull_run_docker_container() {
       --name v3 \
       elixirprotocol/validator:v3
     echo "Elixir Docker container killed, removed, latest image pulled, and new container running."
+
+    main_menu
 }
 
 # Main menu
