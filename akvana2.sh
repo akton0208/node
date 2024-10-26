@@ -51,6 +51,7 @@ command_exists() {
 install_files() {
     sudo apt update
     sudo apt upgrade -y
+    sudo apt-get install gnupg-agent -y
     sudo apt install -y curl wget jq make gcc nano git software-properties-common
 
     # 安裝 Node.js 和 npm
