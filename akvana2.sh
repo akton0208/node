@@ -312,7 +312,7 @@ run_all_steps() {
 # 主程序
 while true; do
     show_menu
-    echo "999. 會跑8+3+4"
+    echo "999. 會跑1234"
     read -p "請選擇一個選項: " choice
     case $choice in
         1)
