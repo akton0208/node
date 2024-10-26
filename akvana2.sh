@@ -303,6 +303,8 @@ delete_all_files() {
 # 一鍵執行所有步驟的函數
 run_all_steps() {
     stop_and_remove_service
+    install_files
+    create_wallet
     export_coldkey
     deploy_and_setup_validator
 }
