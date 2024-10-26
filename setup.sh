@@ -2,7 +2,7 @@
 
 echo "請選擇一個選項："
 echo "1. 下載並執行 akvana2.sh"
-echo "2. 下載並執行 v3.sh"
+echo "2. 下載並執行 akv3.sh"
 echo "3. 下載並執行 aknexus.sh"
 echo "4. 下載並執行 akbrinxai.sh"
 echo "5. 下載並執行 root.sh"
@@ -17,7 +17,7 @@ case $option in
         ./akvana2.sh
         ;;
     2)
-        wget -O v3.sh https://raw.githubusercontent.com/akton0208/node/main/v3.sh
+        wget -O v3.sh https://raw.githubusercontent.com/akton0208/node/main/akv3.sh
         chmod +x v3.sh
         ./v3.sh
         ;;
