@@ -1,19 +1,20 @@
 #!/bin/bash
 
 echo "請選擇一個選項："
-echo "1. 下載並執行 akvana.sh"
+echo "1. 下載並執行 akvana2.sh"
 echo "2. 下載並執行 v3.sh"
 echo "3. 下載並執行 aknexus.sh"
 echo "4. 下載並執行 akbrinxai.sh"
-echo "5. 退出"
+echo "5. 下載並執行 root.sh"
+echo "6. 退出"
 
 read -p "輸入選項號碼: " option
 
 case $option in
     1)
-        wget -O akvana.sh https://raw.githubusercontent.com/akton0208/node/main/akvana.sh
-        chmod +x akvana.sh
-        ./akvana.sh
+        wget -O akvana2.sh https://raw.githubusercontent.com/akton0208/node/main/akvana2.sh
+        chmod +x akvana2.sh
+        ./akvana2.sh
         ;;
     2)
         wget -O v3.sh https://raw.githubusercontent.com/akton0208/node/main/v3.sh
@@ -31,6 +32,11 @@ case $option in
         ./akbrinxai.sh
         ;;
     5)
+        wget -O root.sh https://raw.githubusercontent.com/akton0208/node/main/root.sh
+        chmod +x root.sh
+        ./root.sh
+        ;;
+    6)
         echo "退出程序"
         exit 0
         ;;
