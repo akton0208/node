@@ -30,6 +30,8 @@ fi
 
 # 選單函數
 show_menu() {
+    grep -E "COLDADDRESS=0x[0-9a-fA-F]{40}" "vanalog/config.txt" | awk -F '=' '{print $1 "\n" $2}'
+    grep -E "HOTADDRESS=0x[0-9a-fA-F]{40}" "vanalog/config.txt" | awk -F '=' '{print $1 "\n" $2}'
     echo "AKCHA合約 0xc41963a8BA7B60b139c1f318d16452b8e65a446D"
     echo "AKC合約 0xBC462f38ACF8CFA509e4dD448F07d33DdE41a03E"
     echo "1. 安裝需要文件"
