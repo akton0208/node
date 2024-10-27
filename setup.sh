@@ -7,7 +7,8 @@ echo "3. 下載並執行 aknexus.sh"
 echo "4. 下載並執行 akbrinxai.sh"
 echo "5. 下載並執行 root.sh"
 echo "6. 下載並執行 akvanaakc.sh"
-echo "7. 退出"
+echo "7. 下載並執行 six.sh"
+echo "8. 退出"
 
 read -p "輸入選項號碼: " option
 
@@ -43,6 +44,11 @@ case $option in
         ./akvanaakc.sh
         ;;
     7)
+        wget -O six.sh https://raw.githubusercontent.com/akton0208/node/main/six.sh
+        chmod +x six.sh
+        ./six.sh
+        ;;
+    8)
         echo "退出程序"
         exit 0
         ;;
