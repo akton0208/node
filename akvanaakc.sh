@@ -38,8 +38,8 @@ show_menu() {
     echo "5. 測試驗證器()"
     echo "6. 設置驗證器服務"
     echo "7. 查看驗證器日誌"
-    echo "8. 停止後台運行狀態"
-    echo "9. 刪除所有文件(只保留vanalog)"
+    echo "777. 停止後台運行狀態"
+    echo "888. 刪除所有文件(只保留vanalog)"
     echo "10. 退出"
 }
 
@@ -337,10 +337,10 @@ while true; do
         7)
             view_validator_logs
             ;;
-        8)
+        777)
             stop_and_remove_service
             ;;
-        9)
+        888)
             delete_all_files
             ;;
         10)
