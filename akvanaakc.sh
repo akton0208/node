@@ -31,6 +31,7 @@ fi
 # 選單函數
 show_menu() {
     echo "AKCHA合約 0xc41963a8BA7B60b139c1f318d16452b8e65a446D"
+    echo "AKC合約 0xBC462f38ACF8CFA509e4dD448F07d33DdE41a03E"
     echo "1. 安裝需要文件"
     echo "2. 創建錢包"
     echo "3. 導出冷/熱錢包私鑰(所有資料都在/root/vanalog/config.txt)"
