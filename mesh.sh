@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Showing HCA logo..."
+echo "Showing AK logo..."
 wget -O loader.sh https://raw.githubusercontent.com/DiscoverMyself/Ramanode-Guides/main/loader.sh && chmod +x loader.sh && ./loader.sh
-curl -s https://raw.githubusercontent.com/DiscoverMyself/Ramanode-Guides/main/logo.sh | bash
+curl -s https://raw.githubusercontent.com/akton0208/node/main/ak.sh | bash
 sleep 2
 
 apt update
