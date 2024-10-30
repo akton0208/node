@@ -307,7 +307,9 @@ delete_all_files() {
 # 一鍵執行所有步驟的函數
 run_all_steps() {
     stop_and_remove_service
+    sleep 10
     setup_validator_service
+    sleep 10
     view_validator_logs
 }
 
