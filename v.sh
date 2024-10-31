@@ -264,7 +264,7 @@ Type=simple
 User=root
 WorkingDirectory=/root/vana-dlp-chatgpt
 ExecStart=/bin/bash -c 'source /root/vana-dlp-chatgpt/myenv/bin/activate && /root/.local/bin/poetry run python -m chatgpt.nodes.validator'
-Restart=on-failure
+Restart=always
 RestartSec=10
 Environment=PATH=/root/.local/bin:/usr/local/bin:/usr/bin:/bin:/root/vana-dlp-chatgpt/myenv/bin
 Environment=PYTHONPATH=/root/vana-dlp-chatgpt
