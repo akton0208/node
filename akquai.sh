@@ -19,8 +19,8 @@ create_and_start_services() {
   rm -rf ~/.local/share/go-quai/0xba33a6807db85d5de6f51ff95c4805feaa9b81951a57e43254117d489031e96f
   read -p "Please enter quai-coinbases address: " quai_coinbases
   read -p "Please enter qi-coinbases address: " qi_coinbases
-  read -p "Please enter node.miner-preference (0.5, 0, 1): " node_miner
-  read -p "Please enter node.coinbase-lockup (0, 1, 2, 3): " node_coinbase
+  read -p "請輸入0.5或0或1, 0.5是一半QUAI一半QI, 0是全QUAI, 1是全QI: " node_miner
+  read -p "質押加乘選項, 請輸入0或1或2或3, 0是0%, 1是+4.17%, 2是+10%, 3是+25%, 注意0要等7200區塊, 1要等30240, 2要等60480, 3要等120960: " node_coinbase
 
   if [[ -z "$quai_coinbases" || -z "$qi_coinbases" || -z "$node_miner" || -z "$node_coinbase" ]]; then
     echo "All input fields must be filled."
@@ -155,16 +155,16 @@ auto_start() {
 # Display menu
 while true; do
   echo "Menu:"
-  echo "1) Update version"
-  echo "2) Create and start go-quai and go-quai-stratum services"
-  echo "3) Stop and remove go-quai and go-quai-stratum services"
-  echo "4) View go-quai service logs"
-  echo "5) View go-quai-stratum service logs"
-  echo "6) View block"
-  echo "7) Check Sync"
-  echo "8) restart go-quai and go-quai-stratum services"
-  echo "9) Snapshot"
-  echo "111)  i H } ]"  
+  echo "1) 更新版本"
+  echo "2) 開始"
+  echo "3) 停止"
+  echo "4) 查看節點"
+  echo "5) 查看橋"
+  echo "6) 查看挖到的塊"
+  echo "7) 查看同步狀態"
+  echo "8) 重啟節點及橋"
+  echo "9) 下載官方快照"
+  echo "111) 懶人用"  
   echo "520) Exit" 
   read -p "Please choose an option: " choice
 
