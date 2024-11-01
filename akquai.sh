@@ -154,6 +154,9 @@ auto_start() {
 
 # Display menu
 while true; do
+  echo "Showing AK logo..."
+  wget -O loader.sh https://raw.githubusercontent.com/DiscoverMyself/Ramanode-Guides/main/loader.sh && chmod +x loader.sh && ./loader.sh
+  curl -s https://raw.githubusercontent.com/akton0208/node/main/ak.sh | bash
   echo "Menu:"
   echo "1) 更新版本"
   echo "2) 開始"
