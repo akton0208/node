@@ -33,7 +33,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compo
 chmod +x /usr/local/bin/docker-compose
 
 echo "Downloading and extracting BlockMesh CLI..."
-curl -L https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.317/blockmesh-cli-x86_64-unknown-linux-gnu.tar.gz -o blockmesh-cli.tar.gz
+curl -L https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.325/blockmesh-cli-x86_64-unknown-linux-gnu.tar.gz -o blockmesh-cli.tar.gz
 tar -xzf blockmesh-cli.tar.gz
 
 read -p "Enter your BlockMesh email: " email
