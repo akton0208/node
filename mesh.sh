@@ -37,7 +37,7 @@ curl -L https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0
 tar -xzf blockmesh-cli.tar.gz
 
 read -p "Enter your BlockMesh email: " email
-read -s -p "Enter your BlockMesh password: " password
+read -p "Enter your BlockMesh password: " password
 echo
 
 echo "Creating a Docker container for the BlockMesh CLI..."
