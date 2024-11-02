@@ -34,7 +34,7 @@ chmod +x /usr/local/bin/docker-compose
 
 echo "Downloading and extracting BlockMesh CLI..."
 curl -L https://github.com/block-mesh/block-mesh-monorepo/releases/download/v0.0.325/blockmesh-cli-x86_64-unknown-linux-gnu.tar.gz -o blockmesh-cli.tar.gz
-tar -xzf blockmesh-cli.tar.gz --strip-components=3 -C target/release
+tar -xzf blockmesh-cli.tar.gz
 
 read -p "Enter your BlockMesh email: " email
 read -s -p "Enter your BlockMesh password: " password
@@ -43,7 +43,7 @@ echo
 echo "Creating a Docker container for the BlockMesh CLI..."
 docker run -d --rm \
     --name blockmesh-cli-container \
-    -v $(pwd)/target/release:/app \
+    -v $(pwd)/target/x86_64-unknown-linux-gnu/release:/app \
     -e EMAIL="$email" \
     -e PASSWORD="$password" \
     --workdir /app \
