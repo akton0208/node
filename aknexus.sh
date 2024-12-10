@@ -1,35 +1,57 @@
 #!/bin/bash
 
-# 更新包列表
+# Update package list
 apt update
 
-# 安装必要的软件包
-apt install -y build-essential pkg-config libssl-dev git cargo curl screen unzip
+# Install necessary packages if not already installed
+packages=("build-essential" "pkg-config" "libssl-dev" "git" "cargo" "curl" "screen" "unzip")
+for package in "${packages[@]}"; do
+    if ! dpkg -l | grep -q "^ii  $package"; then
+        apt install -y $package
+    fi
+done
 
-# 下载并解压 protoc
-wget https://github.com/protocolbuffers/protobuf/releases/download/v21.9/protoc-21.9-linux-x86_64.zip
-unzip protoc-21.9-linux-x86_64.zip -d $HOME/.local
+# Download and unzip protoc if not already downloaded
+if [ ! -f "$HOME/.local/bin/protoc" ]; then
+    wget https://github.com/protocolbuffers/protobuf/releases/download/v21.9/protoc-21.9-linux-x86_64.zip
+    unzip protoc-21.9-linux-x86_64.zip -d $HOME/.local
+fi
 
-# 设置环境变量
+# Set environment variables
 export PATH="$HOME/.local/bin:$PATH"
 
-# 安装 rustup
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Install rustup if not already installed
+if [ ! -f "$HOME/.cargo/bin/rustup" ]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
 
-# 加载 cargo 环境变量
+# Load cargo environment variables
 source $HOME/.cargo/env
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# 重新加载 bash 配置
+# Reload bash configuration
 source ~/.bashrc
 
-# 创建 .nexus 目录（如果不存在）
+# Create .nexus directory (if it doesn't exist)
 mkdir -p ~/.nexus
 
-# 将 PROVER_ID 写入文件
+# Write PROVER_ID to file
 echo "WG9GN3g5goVW3QCQMM16sV4eQq62" > ~/.nexus/prover-id
 
-# 执行 Nexus CLI 安装脚本
-curl https://cli.nexus.xyz/ | sh
+# Read CPU thread information
+threads_per_core=$(lscpu | grep "^Thread(s) per core:" | awk '{print $4}')
+cores=$(lscpu | grep "^Core(s) per socket:" | awk '{print $4}')
+sockets=$(lscpu | grep "^Socket(s):" | awk '{print $2}')
+total_threads=$((threads_per_core * cores * sockets))
 
-echo "所有操作已完成！"
+# Calculate the number of programs to run, each using 4 threads
+num_programs=$((total_threads / 4))
+
+# Use screen and taskset to run multiple curl commands
+for i in $(seq 0 $((num_programs - 1))); do
+    start_thread=$((i * 4))
+    end_thread=$((start_thread + 3))
+    screen -dmS n$i bash -c "taskset -c $start_thread-$end_thread curl https://cli.nexus.xyz/ | sh"
+done
+
+echo "All operations completed!"
