@@ -6,6 +6,7 @@ read -p "請輸入你的VANA_PRIVATE_KEY: " VANA_PRIVATE_KEY
 # 設置環境變量
 export VANA_PRIVATE_KEY=$VANA_PRIVATE_KEY
 export VANA_NETWORK=moksha
+export OLLAMA_API_URL=http://ollama:11434/api
 
 # 更新包列表
 sudo apt update
